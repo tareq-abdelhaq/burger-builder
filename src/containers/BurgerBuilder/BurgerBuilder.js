@@ -13,11 +13,25 @@ class BurgerBuilder extends Component
             meat: 0,
         }
     }
+    lessIngredientHandler = (type) => {
+        this.setState(prevIngredients => {
+            return {ingredients:
+                    {
+                        ...prevIngredients.ingredients,[type]: prevIngredients.ingredients[type] === 0 ? 0 :
+                            prevIngredients.ingredients[type] - 1
+                    }}
+        })
+    }
+    moreIngredientHandler = (type) => {
+        this.setState(prevIngredients => {
+            return {ingredients: {...prevIngredients.ingredients,[type]: prevIngredients.ingredients[type] + 1}}
+        })
+    }
     render(){
         return(
             <>
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls ingredients={this.state.ingredients}/>
+                <BuildControls ingredients={this.state.ingredients} less={this.lessIngredientHandler} more={this.moreIngredientHandler}/>
             </>
         )
     }
