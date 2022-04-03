@@ -1,0 +1,15 @@
+.PriceDetails
+{
+    margin: 1rem 0 0;
+}
+.PriceDetails + hr
+{
+    width: 30%;
+    color: #CCC;
+}
+.TotalPrice
+{
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+}

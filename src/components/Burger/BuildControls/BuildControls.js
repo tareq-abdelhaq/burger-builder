@@ -12,7 +12,11 @@ const buildControls = (props) => {
         <div className={classes.BuildControls}>
             <p className={classes.Price}>current price: <em>${props.totalPrice}</em></p>
             {buildControls}
-            <button className={classes.OrderButton} disabled={!props.purchasable}>order now </button>
+            <button
+                className={classes.OrderButton}
+                disabled={!props.purchasable} onClick={props.showOrderSummery}>
+                order now
+            </button>
         </div>
     )
 }
