@@ -9,3 +9,8 @@
     background-color: #CF8F2E;
     box-shadow: 0 2px 1px #CCC;
 }
+.Price
+{
+    text-transform: capitalize;
+    font-size: 1.4rem;
+}
