@@ -46,7 +46,11 @@ class BurgerBuilder extends Component
     orderSummeryHandler = () => {
         this.setState({orderModalVisible: true})
     }
-    hideOrderSummeryHandler = () => {
+    orderCancelHandler = () => {
+        this.setState({orderModalVisible: false})
+    }
+    orderContinueHandler = () => {
+        alert("we received your Order")
         this.setState({orderModalVisible: false})
     }
     render(){
@@ -57,9 +61,10 @@ class BurgerBuilder extends Component
 
         return(
             <>
-                <Modal visible={this.state.orderModalVisible} hideModal={this.hideOrderSummeryHandler}>
+                <Modal visible={this.state.orderModalVisible} cancel={this.orderCancelHandler}>
                     <OrderSummery ingredients={this.state.ingredients} totalPrice={this.state.totalPrice}
                                   prices={BURGER_INGREDIENTS_PRICES}
+                                  cancel={this.orderCancelHandler} continue={this.orderContinueHandler}
                     />
                 </Modal>
 

@@ -3,7 +3,7 @@ import BackDrop from "../Backdrop/Backdrop";
 
 const modal = (props) => (
     <>
-    <BackDrop visible={props.visible} hide={props.hideModal}/>
+    <BackDrop visible={props.visible} hide={props.cancel}/>
     <div className={`${classes.Modal}`}
          style=
              {{

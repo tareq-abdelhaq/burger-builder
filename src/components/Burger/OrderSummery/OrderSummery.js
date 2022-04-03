@@ -1,4 +1,5 @@
 import classes from "./OrderSummery.module.css"
+import Button from "../../../UI/Button/Button";
 
 const orderSummery = (props) => {
 
@@ -19,6 +20,8 @@ const orderSummery = (props) => {
             <hr />
             <p className={classes.TotalPrice}>total price: ${props.totalPrice}</p>
             <p>would you want to continue checkout your delicious burger ?</p>
+            <Button btnType="Success" clicked={props.continue}>continue</Button>
+            <Button btnType="Danger" clicked={props.cancel}>cancel</Button>
         </>
     )
 }

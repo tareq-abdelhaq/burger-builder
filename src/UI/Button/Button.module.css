@@ -1,0 +1,22 @@
+.Button {
+    color: white;
+    cursor: pointer;
+    padding: 1rem;
+    margin: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+}
+
+.Button:first-of-type {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.Success {
+    color: #5C9210;
+}
+
+.Danger {
+    color: #944317;
+}
