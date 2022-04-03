@@ -5,7 +5,7 @@ const orderSummery = (props) => {
 
     const ingredientsList = Object.keys(props.ingredients).map(ingredient => {
         return <li key={ingredient}>
-                    {ingredient} * {props.ingredients[ingredient]} = ${props.prices[ingredient] * props.ingredients[ingredient]}
+                    <span>{ingredient} * {props.ingredients[ingredient]} = ${props.prices[ingredient] * props.ingredients[ingredient]}</span>
                </li>
     })
 
@@ -14,7 +14,7 @@ const orderSummery = (props) => {
             <h3>your Order Summery </h3>
 
             <ul className={classes.PriceDetails}>
-                <li>Basic Burger: $4</li>
+                <li><span>Basic Burger: $4</span></li>
                 {ingredientsList}
             </ul>
             <hr />
