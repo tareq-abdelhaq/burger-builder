@@ -11,12 +11,15 @@ const burger = (props) => {
         prevIngredient.concat(currentIngredient),[])
 
     ingredients = ingredients.length === 0 ? <p>please start adding ingredients !</p> : ingredients
+
     return (
-        <article className={classes.Burger}>
-            <BurgerIngredient type="bread-top"/>
-            {ingredients}
-            <BurgerIngredient type="bread-bottom"/>
-        </article>
+        <>
+            <article className={classes.Burger}>
+                <BurgerIngredient type="bread-top"/>
+                {ingredients}
+                <BurgerIngredient type="bread-bottom"/>
+            </article>
+        </>
     )
 }
 

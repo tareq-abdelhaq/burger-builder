@@ -17,6 +17,11 @@ ul,ol
   list-style: none
 }
 
-a{
-  text-decoration : none
+a,button{
+  text-decoration : none;
+  border: none;
+}
+button
+{
+  background-color: transparent;
 }
