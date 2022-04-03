@@ -41,6 +41,11 @@ class BurgerBuilder extends Component
         })
     }
     render(){
+
+        const ingredients = Object.values(this.state.ingredients).reduce((prevSum,currVal) => prevSum+currVal ,0)
+        const purchasable = ingredients > 0 ;
+
+
         return(
             <>
                 <Burger ingredients={this.state.ingredients}/>
@@ -48,6 +53,7 @@ class BurgerBuilder extends Component
                                less={this.lessIngredientHandler}
                                more={this.moreIngredientHandler}
                                totalPrice={this.state.totalPrice}
+                               purchasable={purchasable}
                 />
             </>
         )
