@@ -1,6 +1,9 @@
 import classes from "./Modal.module.css"
+import BackDrop from "../Backdrop/Backdrop";
 
 const modal = (props) => (
+    <>
+    <BackDrop visible={props.visible} hide={props.hideModal}/>
     <div className={`${classes.Modal}`}
          style=
              {{
@@ -11,6 +14,7 @@ const modal = (props) => (
     >
         {props.children}
     </div>
+    </>
 )
 
 export default modal;

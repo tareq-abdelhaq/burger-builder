@@ -46,6 +46,9 @@ class BurgerBuilder extends Component
     orderSummeryHandler = () => {
         this.setState({orderModalVisible: true})
     }
+    hideOrderSummeryHandler = () => {
+        this.setState({orderModalVisible: false})
+    }
     render(){
 
         const ingredients = Object.values(this.state.ingredients).reduce((prevSum,currVal) => prevSum+currVal ,0)
@@ -54,7 +57,7 @@ class BurgerBuilder extends Component
 
         return(
             <>
-                <Modal visible={this.state.orderModalVisible}>
+                <Modal visible={this.state.orderModalVisible} hideModal={this.hideOrderSummeryHandler}>
                     <OrderSummery ingredients={this.state.ingredients} totalPrice={this.state.totalPrice}
                                   prices={BURGER_INGREDIENTS_PRICES}
                     />
