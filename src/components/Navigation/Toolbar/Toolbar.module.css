@@ -15,8 +15,9 @@
     z-index: 90;
 }
 
-.Toolbar nav ul
+.Toolbar nav
 {
     display: flex;
     align-items: center;
+    height: 100%;
 }

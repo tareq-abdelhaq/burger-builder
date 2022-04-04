@@ -1,18 +1,13 @@
 import classes from "./Toolbar.module.css"
 import Logo from "../../Logo/Logo";
-
+import NavigationList from "../NavigationList/NavigationList"
 
 const toolbar = (props) => (
 
     <header className={classes.Toolbar}>
         <Logo />
         <nav>
-            <ul>
-                <li>Burger Builder</li>
-                <li>Order History</li>
-                <li>Sign up</li>
-                <li>Login</li>
-            </ul>
+          <NavigationList />
         </nav>
         <div>Menu</div>
     </header>
