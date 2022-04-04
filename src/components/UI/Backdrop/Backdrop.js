@@ -1,4 +1,5 @@
 import classes from "./Backdrop.module.css"
+import PropTypes from "prop-types";
 
 const backdrop = (props) => (
     props.visible &&
@@ -7,4 +8,11 @@ const backdrop = (props) => (
     />
 )
 
+
+backdrop.prototype = {
+    visible: PropTypes.bool.isRequired,
+    hide: PropTypes.func.isRequired
+}
+
 export default backdrop;
+

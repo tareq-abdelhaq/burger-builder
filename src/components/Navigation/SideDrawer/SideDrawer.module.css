@@ -3,12 +3,10 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 260px;
+    width: 160px;
     max-width: 60%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: right;
     background-color: #FFF;
     padding: 2.5rem 2rem;
     z-index: 200;
@@ -16,7 +14,7 @@
 }
 
 
-@media (min-width: 560px)
+@media (min-width: 590px)
 {
     .SideDrawer
     {

@@ -1,17 +1,14 @@
 .NavigationItem
 {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
 }
 .NavigationItem a
 {
-    height: 100%;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    color: #FFF;
+    display: block;
+    width: 100%;
+    color: #7f3608;
     text-transform: uppercase;
     font-size: 1.1rem;
     font-weight: 700;
@@ -21,6 +18,34 @@
 .NavigationItem a:active,
 .NavigationItem a.active
 {
-    border-bottom: 4px solid #1ca2d9;
-    background-color: #b97725;
+    color: #1ca2d9;
+}
+
+@media (min-width: 590px)
+{
+    .NavigationItem
+    {
+        height: 100%;
+        width: auto;
+        display: flex;
+        align-items: center;
+        margin: 0 1rem;
+    }
+    .NavigationItem a
+    {
+        height: 100%;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        color: #FFF;
+    }
+    .NavigationItem a:hover,
+    .NavigationItem a:active,
+    .NavigationItem a.active
+    {
+        border-bottom: 4px solid #1ca2d9;
+        background-color: #b97725;
+        color: #FFF;
+    }
+
 }

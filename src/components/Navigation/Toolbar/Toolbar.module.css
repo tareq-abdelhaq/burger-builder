@@ -21,3 +21,12 @@
     align-items: center;
     height: 100%;
 }
+
+
+@media (max-width: 590px)
+{
+    .Toolbar nav
+    {
+        display: none;
+    }
+}

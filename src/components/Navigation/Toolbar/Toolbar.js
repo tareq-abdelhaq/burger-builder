@@ -1,6 +1,7 @@
 import classes from "./Toolbar.module.css"
 import Logo from "../../Logo/Logo";
 import NavigationList from "../NavigationList/NavigationList"
+import DrawerToggle from "../SideDrawer/DrawerToogle/DrawerToggle";
 
 const toolbar = (props) => (
 
@@ -9,7 +10,7 @@ const toolbar = (props) => (
         <nav>
           <NavigationList />
         </nav>
-        <div>Menu</div>
+        <DrawerToggle clicked={props.drawerVisible}/>
     </header>
 
 

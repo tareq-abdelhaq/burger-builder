@@ -1,19 +1,34 @@
+import {Component} from "react"
 import classes from "./Layout.module.css"
 import Toolbar from "../Navigation/Toolbar/Toolbar";
 import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
-const layout = (props) => {
-    return (
-        <>
-            <Toolbar />
-            <SideDrawer />
-            <main className={classes.Content}>
-                {props.children}
-            </main>
-            <footer>
-                footer
-            </footer>
-        </>
-    )
+
+class Layout extends Component
+{
+    state = {
+        visibleDrawer: false
+    }
+
+    menuClickedHandler = () => {
+        this.setState({visibleDrawer: true})
+    }
+
+    backdropHandler = () => {
+        this.setState({visibleDrawer: false})
+    }
+
+    render(){
+        return (
+            <>
+                <Toolbar drawerVisible={this.menuClickedHandler}/>
+                <SideDrawer drawerHidden={this.backdropHandler} visible={this.state.visibleDrawer}/>
+                <main className={classes.Content}>
+                    {this.props.children}
+                </main>
+            </>
+        )
+    }
+
 }
 
-export default layout;
+export default Layout;
