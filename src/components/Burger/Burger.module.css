@@ -1,39 +1,22 @@
 .Burger
 {
-    width: 80%;
-    height: 250px;
+    grid-column: 2/4;
+    justify-self: center;
+    width: 600px;
+    height: 500px;
     overflow: scroll;
-    margin: 10rem auto;
     text-align: center;
     font-weight: 700;
     font-size: 1.4rem;
 }
 
-@media (max-width: 600px) and (max-height: 400px)
-{
+@media (max-width: 800px) {
     .Burger
     {
+        grid-column: 1/-1;
+        order: 1;
         width: 400px;
-        height: 400px;
-    }
-
-}
-
-@media (min-width: 601px) and (min-height: 401px)
-{
-    .Burger
-    {
-        width: 500px;
-        height: 400px;
-    }
-}
-
-@media (min-width: 800px) and (min-height: 700px)
-{
-    .Burger
-    {
-        width: 600px;
-        height: 500px;
+        height: 600px;
     }
 }
 

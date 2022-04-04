@@ -67,8 +67,6 @@ class BurgerBuilder extends Component
                                   cancel={this.orderCancelHandler} continue={this.orderContinueHandler}
                     />
                 </Modal>
-
-                <Burger ingredients={this.state.ingredients}/>
                 <BuildControls ingredients={this.state.ingredients}
                                less={this.lessIngredientHandler}
                                more={this.moreIngredientHandler}
@@ -76,6 +74,7 @@ class BurgerBuilder extends Component
                                purchasable={purchasable}
                                showOrderSummery={this.orderSummeryHandler}
                 />
+                <Burger ingredients={this.state.ingredients}/>
             </>
         )
     }
