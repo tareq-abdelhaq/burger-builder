@@ -5,7 +5,7 @@ import NavigationList from "../NavigationList/NavigationList"
 const toolbar = (props) => (
 
     <header className={classes.Toolbar}>
-        <Logo />
+        <Logo height="60%"/>
         <nav>
           <NavigationList />
         </nav>
