@@ -1,5 +1,5 @@
 import classes from "./OrderSummery.module.css"
-import Button from "../../../UI/Button/Button";
+import Button from "../../UI/Button/Button";
 
 const orderSummery = (props) => {
 

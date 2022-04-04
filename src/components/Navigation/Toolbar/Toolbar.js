@@ -1,9 +1,11 @@
 import classes from "./Toolbar.module.css"
+import Logo from "../../Logo/Logo";
+
 
 const toolbar = (props) => (
 
     <header className={classes.Toolbar}>
-        <div>Logo</div>
+        <Logo />
         <nav>
             <ul>
                 <li>Burger Builder</li>

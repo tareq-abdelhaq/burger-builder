@@ -1,7 +1,7 @@
 import React,{Component} from "react"
 import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
-import Modal from "../../UI/Modal/Modal"
+import Modal from "../../components/UI/Modal/Modal"
 import OrderSummery from "../../components/Burger/OrderSummery/OrderSummery"
 
 const BURGER_INGREDIENTS_PRICES = {
