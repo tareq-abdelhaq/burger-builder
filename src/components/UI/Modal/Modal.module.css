@@ -12,6 +12,7 @@
     box-sizing: border-box;
     transition: all 0.3s ease-in-out;
     opacity: 0;
+    border-radius: 8px;
 }
 
 @media (min-width: 591px) {

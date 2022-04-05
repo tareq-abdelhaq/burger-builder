@@ -1,13 +1,9 @@
 import classes from "./Modal.module.css"
 import BackDrop from "../Backdrop/Backdrop";
-import {Component} from "react";
+import {PureComponent} from "react";
 
 
-class Modal extends Component {
-
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return this.props.visible !== nextProps.visible;
-    }
+class Modal extends PureComponent {
 
     render() {
         return (

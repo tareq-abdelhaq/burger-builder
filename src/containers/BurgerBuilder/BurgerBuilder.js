@@ -4,13 +4,15 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal"
 import OrderSummery from "../../components/Burger/OrderSummery/OrderSummery"
 import axios from "../../axios-orders"
-
+import Spinner from "../../components/UI/Spinner/Spinner"
+import FailureModal from "../../components/UI/FailureModal/FailureModal";
+import SuccessModal from "../../components/UI/SuccessModal/SuccessModal";
 
 const BURGER_INGREDIENTS_PRICES = {
     salad: 0.4,
     bacon: 0.9,
     cheese: 1.1,
-    meat: 1.5
+    meat: 1.5,
 }
 
 class BurgerBuilder extends Component
@@ -23,7 +25,10 @@ class BurgerBuilder extends Component
             meat: 0
         },
         totalPrice: 4,
-        orderModalVisible: false
+        orderModalVisible: false,
+        loading: false,
+        hasError: false,
+        success: false
     }
     lessIngredientHandler = (type) => {
         this.setState(prevIngredients => {
@@ -52,6 +57,7 @@ class BurgerBuilder extends Component
         this.setState({orderModalVisible: false})
     }
     orderContinueHandler = () => {
+        this.setState({loading: true})
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
@@ -67,23 +73,33 @@ class BurgerBuilder extends Component
             }
         }
        axios.post("/orders.json",order)
-           .then(()=> alert("we received your order successfully !"))
-           .catch(()=> alert("something went wrong, try again later !"))
+           .then(()=> this.setState({loading: false,success:true}))
+           .catch(()=> this.setState({loading: false,hasError:true}))
     }
     render(){
 
         const ingredients = Object.values(this.state.ingredients).reduce((prevSum,currVal) => prevSum+currVal ,0)
         const purchasable = ingredients > 0 ;
 
-
+        let modal = <OrderSummery ingredients={this.state.ingredients}
+                                    totalPrice={this.state.totalPrice}
+                                    prices={BURGER_INGREDIENTS_PRICES}
+                                    cancel={this.orderCancelHandler}
+                                    continue={this.orderContinueHandler}
+                      />
+        if (this.state.loading){
+            modal = <Spinner />
+        }
+        if (this.state.hasError){
+            modal = <FailureModal>something went wrong</FailureModal>
+        }
+        if (this.state.success){
+            modal = <SuccessModal> we received you order successfully</SuccessModal>
+        }
         return(
             <>
-                <Modal visible={this.state.orderModalVisible} cancel={this.orderCancelHandler}>
-                    <OrderSummery ingredients={this.state.ingredients} totalPrice={this.state.totalPrice}
-                                  prices={BURGER_INGREDIENTS_PRICES}
-                                  cancel={this.orderCancelHandler}
-                                  continue={this.orderContinueHandler}
-                    />
+                <Modal visible={this.state.orderModalVisible} cancel={this.orderCancelHandler} >
+                    {modal}
                 </Modal>
                 <BuildControls ingredients={this.state.ingredients}
                                less={this.lessIngredientHandler}
