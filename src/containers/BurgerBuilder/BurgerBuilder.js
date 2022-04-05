@@ -3,6 +3,8 @@ import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal"
 import OrderSummery from "../../components/Burger/OrderSummery/OrderSummery"
+import axios from "../../axios-orders"
+
 
 const BURGER_INGREDIENTS_PRICES = {
     salad: 0.4,
@@ -50,8 +52,23 @@ class BurgerBuilder extends Component
         this.setState({orderModalVisible: false})
     }
     orderContinueHandler = () => {
-        alert("we received your Order")
-        this.setState({orderModalVisible: false})
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: "tarek abdelhak",
+                address: {
+                    streetName: "test street",
+                    buildingNo: 12,
+                    floorNumber: 4,
+                    apartNumber: 4
+                },
+                phoneNumber: "01087942619"
+            }
+        }
+       axios.post("/orders.json",order)
+           .then(()=> alert("we received your order successfully !"))
+           .catch(()=> alert("something went wrong, try again later !"))
     }
     render(){
 
