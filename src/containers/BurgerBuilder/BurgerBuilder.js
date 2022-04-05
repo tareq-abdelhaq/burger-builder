@@ -18,18 +18,21 @@ const BURGER_INGREDIENTS_PRICES = {
 class BurgerBuilder extends Component
 {
     state = {
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0
-        },
+        ingredients: {},
         totalPrice: 4,
         orderModalVisible: false,
         loading: false,
         hasError: false,
         success: false
     }
+
+    componentDidMount(){
+
+        axios.get("/ingredients.json")
+            .then((response => this.setState({ingredients: response.data})))
+            .catch(() => this.setState({hasError: true,orderModalVisible: true}))
+    }
+
     lessIngredientHandler = (type) => {
         this.setState(prevIngredients => {
             return {ingredients:
@@ -101,13 +104,18 @@ class BurgerBuilder extends Component
                 <Modal visible={this.state.orderModalVisible} cancel={this.orderCancelHandler} >
                     {modal}
                 </Modal>
-                <BuildControls ingredients={this.state.ingredients}
-                               less={this.lessIngredientHandler}
-                               more={this.moreIngredientHandler}
-                               totalPrice={this.state.totalPrice}
-                               purchasable={purchasable}
-                               showOrderSummery={this.orderSummeryHandler}
-                />
+                {
+                    Object.keys(this.state.ingredients).length !== 0 || this.state.hasError ?
+                    <BuildControls ingredients={this.state.ingredients}
+                                less={this.lessIngredientHandler}
+                                more={this.moreIngredientHandler}
+                                totalPrice={this.state.totalPrice}
+                                purchasable={purchasable}
+                                showOrderSummery={this.orderSummeryHandler}
+                    />
+                    :
+                    <Spinner />
+                }
                 <Burger ingredients={this.state.ingredients}/>
             </>
         )
