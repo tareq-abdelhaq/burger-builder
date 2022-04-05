@@ -54,7 +54,7 @@ class BurgerBuilder extends Component
         })
     }
     orderSummeryHandler = () => {
-        this.setState({orderModalVisible: true})
+        this.setState({orderModalVisible: true,success: false,hasError:false})
     }
     orderCancelHandler = () => {
         this.setState({orderModalVisible: false})
