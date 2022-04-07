@@ -1,12 +1,14 @@
 import React,{Component} from "react"
+import classes from "./BurgerBuilder.module.css"
 import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal"
 import OrderSummery from "../../components/Burger/OrderSummery/OrderSummery"
-import axios from "../../axios-orders"
+import axios from "../../axios"
 import Spinner from "../../components/UI/Spinner/Spinner"
 import FailureModal from "../../components/UI/FailureModal/FailureModal";
 import SuccessModal from "../../components/UI/SuccessModal/SuccessModal";
+import withRouter from "../../hoc/withRouter"
 
 const BURGER_INGREDIENTS_PRICES = {
     salad: 0.4,
@@ -60,24 +62,34 @@ class BurgerBuilder extends Component
         this.setState({orderModalVisible: false})
     }
     orderContinueHandler = () => {
-        this.setState({loading: true})
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: "tarek abdelhak",
-                address: {
-                    streetName: "test street",
-                    buildingNo: 12,
-                    floorNumber: 4,
-                    apartNumber: 4
-                },
-                phoneNumber: "01087942619"
-            }
+        const queryParams = []
+        for (let ingredient in this.state.ingredients){
+            queryParams.push(encodeURIComponent(ingredient) + "=" + encodeURIComponent(this.state.ingredients[ingredient]))
         }
-       axios.post("/orders.json",order)
-           .then(()=> this.setState({loading: false,success:true}))
-           .catch(()=> this.setState({loading: false,hasError:true}))
+        const query = queryParams.join("&")
+        this.props.navigate({
+            pathname: "/checkout",
+            search: `?${query}`
+        })
+        // this.props.navigate("/checkout")
+       //  this.setState({loading: true})
+       //  const order = {
+       //      ingredients: this.state.ingredients,
+       //      price: this.state.totalPrice,
+       //      customer: {
+       //          name: "tarek abdelhak",
+       //          address: {
+       //              streetName: "test street",
+       //              buildingNo: 12,
+       //              floorNumber: 4,
+       //              apartNumber: 4
+       //          },
+       //          phoneNumber: "01087942619"
+       //      }
+       //  }
+       // axios.post("/orders.json",order)
+       //     .then(()=> this.setState({loading: false,success:true}))
+       //     .catch(()=> this.setState({loading: false,hasError:true}))
     }
     render(){
 
@@ -100,7 +112,7 @@ class BurgerBuilder extends Component
             modal = <SuccessModal> we received you order successfully</SuccessModal>
         }
         return(
-            <>
+            <div className={classes.BurgerBuilder}>
                 <Modal visible={this.state.orderModalVisible} cancel={this.orderCancelHandler} >
                     {modal}
                 </Modal>
@@ -117,9 +129,9 @@ class BurgerBuilder extends Component
                     <Spinner />
                 }
                 <Burger ingredients={this.state.ingredients}/>
-            </>
+            </div>
         )
     }
 }
 
-export default BurgerBuilder
+export default withRouter(BurgerBuilder);

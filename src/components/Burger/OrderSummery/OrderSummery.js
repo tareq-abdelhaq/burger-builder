@@ -27,9 +27,6 @@ class OrderSummery extends Component{
         )
     }
 
-
-
-
 }
 
 export default OrderSummery;

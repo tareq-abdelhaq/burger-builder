@@ -1,0 +1,18 @@
+.CheckOutSummery
+{
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}
+@media (min-width: 600px)
+{
+    .CheckOutSummery
+    {
+        width: 500px;
+    }
+}
+.Burger
+{
+    width: auto;
+    height: 300px;
+}

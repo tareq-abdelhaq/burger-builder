@@ -1,7 +1,5 @@
-.Content
+.MainContent
 {
     margin: 10rem 1rem;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    align-items: start;
+    height: 100%;
 }

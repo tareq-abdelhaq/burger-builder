@@ -1,7 +1,7 @@
 import {Component} from "react"
-import classes from "./Layout.module.css"
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
+import classes from "./Layout.module.css"
 
 class Layout extends Component
 {
@@ -22,7 +22,7 @@ class Layout extends Component
             <>
                 <Toolbar drawerVisible={this.menuClickedHandler}/>
                 <SideDrawer drawerHidden={this.backdropHandler} visible={this.state.visibleDrawer}/>
-                <main className={classes.Content}>
+                <main className={classes.MainContent}>
                     {this.props.children}
                 </main>
             </>
