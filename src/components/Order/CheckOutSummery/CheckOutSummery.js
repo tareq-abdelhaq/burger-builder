@@ -12,7 +12,7 @@ class checkOutSummery extends Component{
     }
     continueOrderHandler = () =>
     {
-        this.props.navigate("/order-forum")
+        this.props.navigate("order-forum",{replace:true})
     }
     render(){
         console.log(this.props.ingredients)

@@ -3,7 +3,7 @@ import Layout from "./containers/Layout/Layout";
 import {Routes,Route} from "react-router-dom"
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 import CheckOut from "./containers/CheckOut/CheckOut";
-import Forum from "./components/Order/Forum/Forum";
+import OrderForum from "./containers/CheckOut/OrderForum/OrderForum";
 
 
 class App extends React.Component{
@@ -12,8 +12,9 @@ class App extends React.Component{
        <Layout>
            <Routes>
                <Route path="/" element={<BurgerBuilder />}/>
-               <Route path="/checkout" element={<CheckOut />} />
-               <Route path="/order-forum" element={<Forum />} />
+               <Route path="/checkout" element={<CheckOut />}>
+                   <Route path="order-forum" element={<OrderForum />} />
+               </Route>
            </Routes>
        </Layout>
     );

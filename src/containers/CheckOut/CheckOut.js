@@ -1,6 +1,8 @@
 import {Component} from "react";
 import CheckOutSummery from "../../components/Order/CheckOutSummery/CheckOutSummery";
 import withRouter from "../../hoc/withRouter";
+import {Outlet} from "react-router-dom";
+
 class CheckOut extends Component
 {
     state = {
@@ -17,7 +19,10 @@ class CheckOut extends Component
 
     render() {
         return (
+            <>
             <CheckOutSummery ingredients={this.state.ingredients}/>
+            <Outlet />
+            </>
         )
     }
 }
