@@ -6,19 +6,23 @@ import axios from "../../../axios"
 import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 import Modal from "../../../components/UI/Modal/Modal";
 import withRouter from "../../../hoc/withRouter";
+import Input from "../../../components/UI/Input/Input";
 
 class OrderForum extends Component
 {
 
     state = {
-        username: "",
-        email: "",
-        phoneNumber: "",
-        city: "",
-        streetName: "",
-        buildingNumber: "",
-        floorNumber: "",
-        apartmentNumber: "",
+        orderForm: {
+            username: "",
+            email: "",
+            phoneNumber: "",
+            city: "",
+            streetName: "",
+            buildingNumber: "",
+            floorNumber: "",
+            apartmentNumber: "",
+            deliveryMethod: "Fastest"
+        },
         loading: false,
         success: false,
         modalVisible: false
@@ -26,10 +30,20 @@ class OrderForum extends Component
     }
 
     inputChangeHandler = (e) => {
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({orderForm: {...this.state.orderForm,[e.target.name]: e.target.value}})
+
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                orderForm: {
+                    ...(prevState.orderForm),
+                    [e.target.name]: e.target.value
+                }
+            }
+        })
     }
 
-    orderHandler = (e) =>
+   submitOrderHandler = (e) =>
     {
         e.preventDefault();
         this.setState({loading: true})
@@ -37,15 +51,15 @@ class OrderForum extends Component
              ingredients: this.props.ingredients,
              price: this.props.totalPrice,
              customer: {
-                     name: this.state.username,
-                     email: this.state.email,
-                     phoneNumber: this.state.phoneNumber
+                     name: this.state.orderForm.username,
+                     email: this.state.orderForm.email,
+                     phoneNumber: this.state.orderForm.phoneNumber
                  },
                  address: {
-                     streetName: this.state.streetName,
-                     buildingNo: this.state.buildingNumber,
-                     floorNumber: this.state.floorNumber,
-                     apartNumber: this.state.apartmentNumber
+                     streetName: this.state.orderForm.streetName,
+                     buildingNo: this.state.orderForm.buildingNumber,
+                     floorNumber: this.state.orderForm.floorNumber,
+                     apartNumber: this.state.orderForm.apartmentNumber
                  }
              }
         axios.post("/orders.json",order)
@@ -67,15 +81,27 @@ class OrderForum extends Component
                             <>
                                 <h3> Enter your Contact Data </h3>
                                 <form>
-                                    <input type="text" placeholder="your name" name="username" value={this.state.username} onChange={this.inputChangeHandler}/>
-                                    <input type="email" placeholder="email" name="email" value={this.state.email} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="phone number" name="phoneNumber" value={this.state.phoneNumber} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="city" name="city" value={this.state.city} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="street" name="streetName" value={this.state.streetName} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="building number" name="buildingNumber" value={this.state.buildingNumber} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="Floor number" name="floorNumber" value={this.state.floorNumber} onChange={this.inputChangeHandler}/>
-                                    <input type="text" placeholder="Apartment number" name="apartmentNumber" value={this.state.apartmentNumber} onChange={this.inputChangeHandler}/>
-                                    <Button btnType="Success" clicked={this.orderHandler}>Make Order</Button>
+                                    <Input label="username" inputtype="input" type="text" name="username" id="username"
+                                           value={this.state.orderForm.username} onChange={this.inputChangeHandler}/>
+                                    <Input label="email" inputtype="input" type="email" name="email" id="email"
+                                           value={this.state.orderForm.email} onChange={this.inputChangeHandler}/>
+                                    <Input label="phone number" inputtype="input" type="text" name="phoneNumber" id="phoneNumber"
+                                           value={this.state.orderForm.phoneNumber} onChange={this.inputChangeHandler}/>
+                                    <Input label="city" inputtype="input" type="text" name="city" id="city"
+                                           value={this.state.orderForm.city} onChange={this.inputChangeHandler}/>
+                                    <Input label="street name" inputtype="input" type="text" name="streetName" id="street"
+                                           value={this.state.orderForm.streetName} onChange={this.inputChangeHandler}/>
+                                    <Input label="buildingNo" inputtype="input" type="text" name="buildingNumber" id="buildingNumber"
+                                           value={this.state.orderForm.buildingNumber} onChange={this.inputChangeHandler}/>
+                                    <Input label="floorNo" inputtype="input" type="text" name="floorNumber" id="floorNumber"
+                                           value={this.state.orderForm.floorNumber} onChange={this.inputChangeHandler}/>
+                                    <Input label="apartmentNo" inputtype="input" type="text" name="apartmentNumber" id="apartmentNumber"
+                                           value={this.state.orderForm.apartmentNumber} onChange={this.inputChangeHandler}/>
+                                    <Input inputtype="select" label="select a delivery method" options={["Fastest","Cheapest"]}
+                                           value={this.state.orderForm.deliveryMethod} name="deliveryMethod" id="deliveryMethod"
+                                           onChange={this.inputChangeHandler}
+                                    />
+                                    <Button btnType="Success" clicked={this.submitOrderHandler}>Make Order</Button>
                                 </form>
                             </>
                         }

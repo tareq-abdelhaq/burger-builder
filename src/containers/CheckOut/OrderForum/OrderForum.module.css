@@ -22,18 +22,3 @@
     text-transform: capitalize;
     margin-bottom: 2rem;
 }
-.OrderForum form input
-
-{
-
-    display: block;
-    margin: auto auto 1rem;
-    width: 80%;
-    height: 5rem;
-    padding-left: 1rem;
-    font-size: 1.5rem;
-    color: #7f3608;
-    font-weight: 700;
-}
-
-
