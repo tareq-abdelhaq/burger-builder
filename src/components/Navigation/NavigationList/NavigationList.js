@@ -3,10 +3,10 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 
 const navigationList = () => (
     <ul className={classes.NavigationList}>
-        <NavigationItem link="/" active={true}>Burger Builder</NavigationItem>
-        <NavigationItem link="/">Order History</NavigationItem>
-        <NavigationItem link="/">Login</NavigationItem>
-        <NavigationItem link="/">Sign up</NavigationItem>
+        <NavigationItem link="/">Burger Builder</NavigationItem>
+        <NavigationItem link="/orders">Order History</NavigationItem>
+        <NavigationItem link="/login">Login</NavigationItem>
+        <NavigationItem link="/signup">Sign up</NavigationItem>
     </ul>
 )
 

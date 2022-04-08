@@ -1,0 +1,13 @@
+.Order
+{
+    width: 80%;
+    border: 1px solid #EEE;
+    box-shadow: 0 2px 3px #CCC;
+    margin: 10px auto;
+    font-size: 1.6rem;
+    padding: 1rem;
+}
+.Order p:nth-child(2)
+{
+    font-weight: 700;
+}
