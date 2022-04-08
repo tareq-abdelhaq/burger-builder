@@ -1,27 +1,36 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import CheckOutSummery from "../../components/Order/CheckOutSummery/CheckOutSummery";
 import withRouter from "../../hoc/withRouter";
-import {Outlet} from "react-router-dom";
+import {Routes,Route} from "react-router-dom";
+import OrderForum from "./OrderForum/OrderForum";
 
 class CheckOut extends Component
 {
     state = {
-        ingredients: {}
+        ingredients: {},
+        totalPrice: null
     }
     componentDidMount() {
        const searchParams = new URLSearchParams(this.props.location.search);
        const ingredients = {}
+       let totalPrice = null;
        searchParams.forEach((value,key)=>{
-           ingredients[key] = +value
+           if (key === "totalPrice"){
+               totalPrice = value
+           }else{
+               ingredients[key] = +value
+           }
        })
-       this.setState({ingredients: ingredients})
+       this.setState({ingredients: ingredients,totalPrice:totalPrice})
     }
 
     render() {
         return (
             <>
             <CheckOutSummery ingredients={this.state.ingredients}/>
-            <Outlet />
+                <Routes>
+                    <Route path="/order-forum" element={<OrderForum ingredients={this.state.ingredients} totalPrice={this.state.totalPrice}/>} />
+                </Routes>
             </>
         )
     }

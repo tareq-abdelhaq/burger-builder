@@ -15,7 +15,6 @@ class checkOutSummery extends Component{
         this.props.navigate("order-forum",{replace:true})
     }
     render(){
-        console.log(this.props.ingredients)
         return (
             <div className={classes.CheckOutSummery}>
                 <h1>we hope it tastes well !</h1>
