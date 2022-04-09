@@ -22,11 +22,25 @@
     padding: 6px 10px;
     display: block;
     width: 100%;
+    font-size: 1.6rem;
 }
 
 .InputElement:focus
 {
     outline: none;
-    background-color: #b97725;
-    color: #FFF;
+    background-color: #DDD;
+    color: #333;
+}
+.InValid
+{
+    background-color: #eeb5af;
+    border: 1px solid #f63030;
+}
+.InvalidMessage
+{
+    color: #d76f62;
+    font-weight: 700;
+    font-size: 1.3rem;
+    width: fit-content;
+    text-transform: capitalize;
 }

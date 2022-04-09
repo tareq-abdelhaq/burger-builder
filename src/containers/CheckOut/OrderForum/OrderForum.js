@@ -7,40 +7,155 @@ import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 import Modal from "../../../components/UI/Modal/Modal";
 import withRouter from "../../../hoc/withRouter";
 import Input from "../../../components/UI/Input/Input";
+import input from "../../../components/UI/Input/Input";
+import order from "../../../components/Order/Order";
 
 class OrderForum extends Component
 {
 
     state = {
         orderForm: {
-            username: "",
-            email: "",
-            phoneNumber: "",
-            city: "",
-            streetName: "",
-            buildingNumber: "",
-            floorNumber: "",
-            apartmentNumber: "",
-            deliveryMethod: "Fastest"
+            username: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                    minLength: 6
+                }
+            },
+            email: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true
+                }
+            },
+            phoneNumber: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                    numeric: true
+                },
+            },
+            city: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                },
+            },
+            streetName: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                },
+            },
+            buildingNumber: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                    numeric: true
+                },
+            },
+            floorNumber: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                    numeric: true
+                },
+            },
+            apartmentNumber: {
+                inputtype: "input",
+                value: "",
+                valid: false,
+                touched: false,
+                invalidMessage: "",
+                validationRules: {
+                    required: true,
+                    numeric: true
+                },
+            },
+            deliveryMethod: {
+                inputtype: "select",
+                options: [{value: "fastest",displayedValue: "Fastest"},{value: "cheapest",displayedValue: "Cheapest"}],
+                value: "Fastest",
+                valid: true,
+                validationRules: {}
+            },
         },
+        valid: false,
         loading: false,
         success: false,
-        modalVisible: false
+        modalVisible: false,
+        hasError: false,
+        errorMessage: ""
 
     }
 
-    inputChangeHandler = (e) => {
-        this.setState({orderForm: {...this.state.orderForm,[e.target.name]: e.target.value}})
-
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                orderForm: {
-                    ...(prevState.orderForm),
-                    [e.target.name]: e.target.value
-                }
+    checkFormValidity = (value,rules,fieldName) => {
+        const validity = {valid: true,invalidMessage: ""}
+        if (rules.required){
+            if (value.trim() === ""){
+                validity.valid = false;
+                validity.invalidMessage = `${fieldName} mustn't be empty`
             }
-        })
+        }
+        if (rules.minLength){
+            if (validity.valid && value.length < rules.minLength){
+                validity.valid = false;
+                validity.invalidMessage = `${fieldName} must be at least ${rules.minLength} characters`
+            }
+        }
+        if (rules.numeric)
+        {
+            if (validity.valid && isNaN(value)){
+                validity.valid = false;
+                validity.invalidMessage = `${fieldName} must be a valid number`
+            }
+        }
+
+        return validity
+    }
+
+    inputChangeHandler = (e) => {
+        const updatedOrderForm = {...this.state.orderForm}
+        updatedOrderForm[e.target.name].value = e.target.value;
+        const {valid,invalidMessage} = this.checkFormValidity(e.target.value,updatedOrderForm[e.target.name].validationRules,e.target.name)
+        updatedOrderForm[e.target.name].valid = valid
+        updatedOrderForm[e.target.name].invalidMessage = invalidMessage
+        updatedOrderForm[e.target.name].touched = true;
+        let formValid = true;
+        for (let field in updatedOrderForm){
+            if (!updatedOrderForm[field].valid){
+                formValid = false
+            }
+        }
+        this.setState({orderForm: updatedOrderForm,valid: formValid})
     }
 
    submitOrderHandler = (e) =>
@@ -51,15 +166,15 @@ class OrderForum extends Component
              ingredients: this.props.ingredients,
              price: this.props.totalPrice,
              customer: {
-                     name: this.state.orderForm.username,
-                     email: this.state.orderForm.email,
-                     phoneNumber: this.state.orderForm.phoneNumber
+                     name: this.state.orderForm.username.value,
+                     email: this.state.orderForm.email.value,
+                     phoneNumber: this.state.orderForm.phoneNumber.value
                  },
                  address: {
-                     streetName: this.state.orderForm.streetName,
-                     buildingNo: this.state.orderForm.buildingNumber,
-                     floorNumber: this.state.orderForm.floorNumber,
-                     apartNumber: this.state.orderForm.apartmentNumber
+                     streetName: this.state.orderForm.streetName.value,
+                     buildingNo: this.state.orderForm.buildingNumber.value,
+                     floorNumber: this.state.orderForm.floorNumber.value,
+                     apartNumber: this.state.orderForm.apartmentNumber.value
                  }
              }
         axios.post("/orders.json",order)
@@ -71,6 +186,17 @@ class OrderForum extends Component
    }
 
     render() {
+        const orderForm = this.state.orderForm
+        const inputElements = [];
+
+        for(let key in orderForm){
+            inputElements.push(<Input key={key} name={key} inputtype={orderForm[key].inputtype} label={key}
+                                      options={orderForm[key].options} value={orderForm[key].value}
+                                      change={this.inputChangeHandler} valid={orderForm[key].valid}
+                                      touched={orderForm[key].touched} invalidMessage={orderForm[key].invalidMessage}/>)
+        }
+
+
         return(
                 this.state.success ?
                     <Modal visible={this.state.modalVisible} cancel={this.cancelModalHandler}>
@@ -81,27 +207,10 @@ class OrderForum extends Component
                             <>
                                 <h3> Enter your Contact Data </h3>
                                 <form>
-                                    <Input label="username" inputtype="input" type="text" name="username" id="username"
-                                           value={this.state.orderForm.username} onChange={this.inputChangeHandler}/>
-                                    <Input label="email" inputtype="input" type="email" name="email" id="email"
-                                           value={this.state.orderForm.email} onChange={this.inputChangeHandler}/>
-                                    <Input label="phone number" inputtype="input" type="text" name="phoneNumber" id="phoneNumber"
-                                           value={this.state.orderForm.phoneNumber} onChange={this.inputChangeHandler}/>
-                                    <Input label="city" inputtype="input" type="text" name="city" id="city"
-                                           value={this.state.orderForm.city} onChange={this.inputChangeHandler}/>
-                                    <Input label="street name" inputtype="input" type="text" name="streetName" id="street"
-                                           value={this.state.orderForm.streetName} onChange={this.inputChangeHandler}/>
-                                    <Input label="buildingNo" inputtype="input" type="text" name="buildingNumber" id="buildingNumber"
-                                           value={this.state.orderForm.buildingNumber} onChange={this.inputChangeHandler}/>
-                                    <Input label="floorNo" inputtype="input" type="text" name="floorNumber" id="floorNumber"
-                                           value={this.state.orderForm.floorNumber} onChange={this.inputChangeHandler}/>
-                                    <Input label="apartmentNo" inputtype="input" type="text" name="apartmentNumber" id="apartmentNumber"
-                                           value={this.state.orderForm.apartmentNumber} onChange={this.inputChangeHandler}/>
-                                    <Input inputtype="select" label="select a delivery method" options={["Fastest","Cheapest"]}
-                                           value={this.state.orderForm.deliveryMethod} name="deliveryMethod" id="deliveryMethod"
-                                           onChange={this.inputChangeHandler}
-                                    />
-                                    <Button btnType="Success" clicked={this.submitOrderHandler}>Make Order</Button>
+                                    {inputElements}
+                                    <Button btnType="Success" clicked={this.submitOrderHandler} disabled={!this.state.valid}>
+                                        Make Order
+                                    </Button>
                                 </form>
                             </>
                         }
