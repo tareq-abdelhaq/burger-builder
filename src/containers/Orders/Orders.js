@@ -10,12 +10,13 @@ class Orders extends Component
 
     state = {
         orders: [],
-        loading: true,
+        loading: false,
         hasError: false,
         errorMessage: ""
     }
 
     componentDidMount() {
+        this.setState({loading: true})
         //response =>
         axios.get("orders.json")
             .then(response => {
