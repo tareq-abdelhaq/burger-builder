@@ -1,6 +1,6 @@
 import * as actionTypes from "./actions"
 import {BURGER_INGREDIENTS_PRICES} from "../constants";
-
+import axios from "../axios"
 const initialState =
 {
     ingredients: {

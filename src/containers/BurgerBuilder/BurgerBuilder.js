@@ -22,11 +22,6 @@ class BurgerBuilder extends Component
         success: false
     }
 
-    componentDidMount(){
-        // axios.get("/ingredients.json")
-        //     .then((response => this.setState({ingredients: response.data})))
-        //     .catch(() => this.setState({hasError: true,orderModalVisible: true}))
-    }
     orderSummeryHandler = () => {
         this.setState({orderModalVisible: true,success: false,hasError:false})
     }
