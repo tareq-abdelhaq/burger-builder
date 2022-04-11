@@ -1,5 +1,6 @@
 import classes from "./BuildControl.module.css"
-import * as actionTypes from "../../../../store/actions";
+import * as actionCreators from "../../../../store/actions/index";
+
 import {connect} from "react-redux";
 
 const buildControl = (props) => (
@@ -12,8 +13,8 @@ const buildControl = (props) => (
 
 const mapDispatchToProps = dispatch => {
     return {
-        addMoreIngredient: (type) => dispatch({type: actionTypes.ADD_MORE_INGREDIENT,ingredientType: type}),
-        lessIngredient: (type) => dispatch({type: actionTypes.LESS_INGREDIENT,ingredientType: type})
+        addMoreIngredient: (type) => dispatch(actionCreators.addIngredient(type)),
+        lessIngredient: (type) => dispatch(actionCreators.removeIngredient(type))
     }
 }
 

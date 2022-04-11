@@ -1,15 +1,16 @@
 import React,{Component} from "react"
 import {connect} from "react-redux";
+import { fetchIngredients } from "../../store/actions/index"
 import classes from "./BurgerBuilder.module.css"
 import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
 import Modal from "../../components/UI/Modal/Modal"
 import OrderSummery from "../../components/Burger/OrderSummery/OrderSummery"
-// import axios from "../../axios"
 import Spinner from "../../components/UI/Spinner/Spinner"
 import FailureModal from "../../components/UI/FailureModal/FailureModal";
 import SuccessModal from "../../components/UI/SuccessModal/SuccessModal";
 import withRouter from "../../hoc/withRouter"
+
 
 
 
@@ -22,6 +23,10 @@ class BurgerBuilder extends Component
         success: false
     }
 
+    componentDidMount() {
+        this.props.fetchIngredients()
+    }
+
     orderSummeryHandler = () => {
         this.setState({orderModalVisible: true,success: false,hasError:false})
     }
@@ -32,7 +37,6 @@ class BurgerBuilder extends Component
         this.props.navigate("/checkout")
     }
     render(){
-
         const ingredients = Object.values(this.props.ingredients).reduce((prevSum,currVal) => prevSum+currVal ,0)
         const purchasable = ingredients > 0 ;
 
@@ -44,8 +48,8 @@ class BurgerBuilder extends Component
         if (this.state.loading){
             modal = <Spinner />
         }
-        if (this.state.hasError){
-            modal = <FailureModal>something went wrong</FailureModal>
+        if (this.props.hasError){
+            modal = <FailureModal>{this.props.errorMessage}</FailureModal>
         }
         if (this.state.success){
             modal = <SuccessModal> we received you order successfully</SuccessModal>
@@ -56,7 +60,7 @@ class BurgerBuilder extends Component
                     {modal}
                 </Modal>
                 {
-                    Object.keys(this.props.ingredients).length !== 0 || this.state.hasError ?
+                    Object.keys(this.props.ingredients).length !== 0 || this.props.hasError ?
                     <BuildControls ingredients={this.props.ingredients}
                                 totalPrice={this.props.totalPrice}
                                 purchasable={purchasable}
@@ -74,8 +78,15 @@ class BurgerBuilder extends Component
 const mapStateToProps = state => {
     return {
         ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        hasError: state.hasError,
+        errorMessage: state.errorMessage
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchIngredients: () => dispatch(fetchIngredients())
     }
 }
 
-export default connect(mapStateToProps,null)(withRouter(BurgerBuilder));
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(BurgerBuilder));
