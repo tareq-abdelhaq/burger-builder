@@ -4,8 +4,6 @@ const initialState =
 {
     ingredients: {},
     totalPrice: 4,
-    hasError: false,
-    errorMessage: "",
 }
 
 export const reducer = (state = initialState, action) =>
@@ -20,14 +18,7 @@ export const reducer = (state = initialState, action) =>
                     cheese: action.ingredients.cheese,
                     meat: action.ingredients.meat
                 },
-                hasError: false,
-                errorMessage: ""
-            }
-        case actionTypes.HANDLE_INITIALIZE_INGREDIENTS:
-            return {
-                ...state,
-                hasError: true,
-                errorMessage: action.errorMessage
+                totalPrice: 4
             }
         case actionTypes.ADD_INGREDIENT:
             return {

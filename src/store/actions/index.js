@@ -1,5 +1,5 @@
 export {
     addIngredient,
     removeIngredient,
-    fetchIngredients
+    initializeIngredients
 } from "./ingredients"

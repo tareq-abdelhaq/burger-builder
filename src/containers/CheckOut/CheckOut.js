@@ -24,10 +24,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-
-    }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(CheckOut))
+export default connect(mapStateToProps)(withRouter(CheckOut))

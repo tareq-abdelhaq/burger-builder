@@ -19,11 +19,9 @@ const rootElement = document.querySelector("#root");
 const container = ReactDOMClient.createRoot(rootElement)
 
 container.render(
-    <React.StrictMode>
-        <Provider store={store}>
-          <BrowserRouter>
-              <App />
-          </BrowserRouter>
-        </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+          <App />
+      </BrowserRouter>
+    </Provider>
 )

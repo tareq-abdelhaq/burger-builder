@@ -177,7 +177,7 @@ class OrderForum extends Component
                      apartNumber: this.state.orderForm.apartmentNumber.value
                  }
              }
-        axios.post("/orders.json",order)
+        axios.post("orders.json",order)
         .then(()=> this.setState({loading: false,success: true,modalVisible:true}))
    }
 
@@ -226,10 +226,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
 
-    }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(OrderForum));
+export default connect(mapStateToProps)(withRouter(OrderForum));

@@ -1,6 +1,6 @@
 import React,{Component} from "react"
 import {connect} from "react-redux";
-import { fetchIngredients } from "../../store/actions/index"
+import  * as actionCreators from "../../store/actions/index";
 import classes from "./BurgerBuilder.module.css"
 import Burger from "../../components/Burger/Burger"
 import BuildControls from "../../components/Burger/BuildControls/BuildControls"
@@ -10,6 +10,8 @@ import Spinner from "../../components/UI/Spinner/Spinner"
 import FailureModal from "../../components/UI/FailureModal/FailureModal";
 import SuccessModal from "../../components/UI/SuccessModal/SuccessModal";
 import withRouter from "../../hoc/withRouter"
+import axios from "../../axios";
+
 
 
 
@@ -24,7 +26,13 @@ class BurgerBuilder extends Component
     }
 
     componentDidMount() {
-        this.props.fetchIngredients()
+        axios.get("ingredients.json")
+            .then(response => {
+                this.props.initializeIngredients(response.data)
+            })
+            .catch(error => {
+                this.setState({orderModalVisible: true,hasError: true})
+            })
     }
 
     orderSummeryHandler = () => {
@@ -48,8 +56,8 @@ class BurgerBuilder extends Component
         if (this.state.loading){
             modal = <Spinner />
         }
-        if (this.props.hasError){
-            modal = <FailureModal>{this.props.errorMessage}</FailureModal>
+        if (this.state.hasError){
+            modal = <FailureModal>SOMETHING WENT WRONG !</FailureModal>
         }
         if (this.state.success){
             modal = <SuccessModal> we received you order successfully</SuccessModal>
@@ -60,7 +68,7 @@ class BurgerBuilder extends Component
                     {modal}
                 </Modal>
                 {
-                    Object.keys(this.props.ingredients).length !== 0 || this.props.hasError ?
+                    Object.keys(this.props.ingredients).length !== 0 || this.state.hasError ?
                     <BuildControls ingredients={this.props.ingredients}
                                 totalPrice={this.props.totalPrice}
                                 purchasable={purchasable}
@@ -80,12 +88,13 @@ const mapStateToProps = state => {
         ingredients: state.ingredients,
         totalPrice: state.totalPrice,
         hasError: state.hasError,
-        errorMessage: state.errorMessage
+        errorMessage: state.errorMessage,
+        orderModalVisible: state.orderModalVisible
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        fetchIngredients: () => dispatch(fetchIngredients())
+        initializeIngredients: (ingredients) => dispatch(actionCreators.initializeIngredients(ingredients)),
     }
 }
 
