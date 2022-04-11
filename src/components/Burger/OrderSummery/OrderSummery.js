@@ -1,13 +1,13 @@
 import classes from "./OrderSummery.module.css"
 import Button from "../../UI/Button/Button";
 import {Component} from "react";
-
+import {BURGER_INGREDIENTS_PRICES} from "../../../constants";
 class OrderSummery extends Component{
 
     render() {
         const ingredientsList = Object.keys(this.props.ingredients).map(ingredient => {
             return <li key={ingredient}>
-                <span>{ingredient} * {this.props.ingredients[ingredient]} = ${this.props.prices[ingredient] * this.props.ingredients[ingredient]}</span>
+                <span>{ingredient} * {this.props.ingredients[ingredient]} = ${BURGER_INGREDIENTS_PRICES[ingredient] * this.props.ingredients[ingredient]}</span>
             </li>
         })
         return (

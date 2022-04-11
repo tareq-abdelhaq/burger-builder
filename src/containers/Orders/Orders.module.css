@@ -1,5 +1,14 @@
 .Orders
 {
-    width: 100%;
+    width: 80%;
+    margin: auto;
+}
+.EmptyOrders
+{
+    font-size: 2.5rem;
+    color: #e39e4a;
+    font-weight: 700;
+    text-transform: capitalize;
+    width: fit-content;
     margin: auto;
 }

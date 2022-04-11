@@ -1,4 +1,5 @@
 import {Component} from "react";
+import {connect} from "react-redux";
 import classes from "./OrderForum.module.css"
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
@@ -7,7 +8,6 @@ import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 import Modal from "../../../components/UI/Modal/Modal";
 import withRouter from "../../../hoc/withRouter";
 import Input from "../../../components/UI/Input/Input";
-import input from "../../../components/UI/Input/Input";
 import order from "../../../components/Order/Order";
 
 class OrderForum extends Component
@@ -218,4 +218,18 @@ class OrderForum extends Component
                 )
         }
 }
-export default withRouter(OrderForum);
+
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(OrderForum));

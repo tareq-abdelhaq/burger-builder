@@ -37,9 +37,9 @@ class Orders extends Component
 
     render()
     {
-        let content = this.state.orders.map(order => {
-            return <Order key={order.id} ingredients={order.ingredients} price={order.price}/>
-        })
+        let content = Object.keys(this.state.orders).length !== 0  ? this.state.orders.map(order => {
+            return <Order key={order.id} ingredients={order.ingredients} price={order.price}/>}) :
+            <p className={classes.EmptyOrders}> there is no such orders yet </p>
         if (this.state.hasError){
             content = <Modal visible={this.state.hasError} cancel={this.cancelOrdersHistoryHandler}><FailureModal>Something went wrong </FailureModal></Modal>
         }
