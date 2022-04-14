@@ -1,8 +1,8 @@
 import * as actionTypes from "../actions/actionTypes"
 
 const initialState = {
-    email: "",
-    password: "",
+    token: null,
+    userId: null,
     authenticated: false
 }
 
@@ -12,15 +12,15 @@ export const auth = (state = initialState, action) =>
         case actionTypes.AUTHENTICATE_USER:
             return {
                 ...state,
-                email: action.authData.email,
-                password: action.authData.password,
+                token: action.authData.idToken,
+                userId: action.authData.localId,
                 authenticated: true
             }
         case actionTypes.LOGIN_USER:
             return {
                 ...state,
-                email: action.authData.email,
-                password: action.authData.password,
+                token: action.authData.idToken,
+                userId: action.authData.localId,
                 authenticated: true
             }
         default:

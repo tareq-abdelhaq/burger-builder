@@ -1,21 +1,13 @@
 .Auth
 {
-    display: flex;
-    gap: 10px;
     width: 90%;
     margin: auto;
+    text-align: center;
 }
-.Signup
+.Signup,.Login
 {
-    flex-basis: 50%;
-    border: 1px solid #CCC;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 2px 3px #DDD;
-}
-.Login
-{
-    flex-basis: 50%;
+    width: 50%;
+    margin: auto;
     border: 1px solid #CCC;
     border-radius: 10px;
     padding: 10px;
@@ -26,4 +18,11 @@
     width: fit-content;
     margin: auto;
     font-size: 1.8rem;
+}
+.Error
+{
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #f87060;
+    text-transform: uppercase;
 }

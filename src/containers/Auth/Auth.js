@@ -76,9 +76,11 @@ class Auth extends Component
                 }
             }
         },
+        isSignup: true,
         loginFormValid: false,
         loading: false,
-        hasError: false
+        hasError: false,
+        error: {}
     }
     checkValidity = (field,value,rules) => {
         const validity = {field: field, valid: true,inValidMessage: ""}
@@ -189,7 +191,7 @@ class Auth extends Component
 
     signupSubmitHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true})
+        this.setState({loading: true, hasError: false})
         const authData = {
             email: this.state.signupForm.email.value,
             password: this.state.signupForm.password.value,
@@ -197,18 +199,18 @@ class Auth extends Component
         }
         axiosAuth.post(`/accounts:signUp?key=${API_KEY}`,authData)
             .then((response) => {
-                this.props.authenticate(authData)
-                this.setState({loading: false})
+                this.props.authenticate(response.data)
+                this.setState({loading: false, hasError: false})
                 this.props.navigate("/")
             })
             .catch(error => {
-                this.setState({loading: false, hasError: true})
+                this.setState({loading: false, hasError: true, error: error.response.data.error})
             })
     }
 
     loginSubmitHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true})
+        this.setState({loading: true, hasError: false})
         const authData = {
             email: this.state.loginForm.email.value,
             password: this.state.loginForm.password.value,
@@ -216,16 +218,19 @@ class Auth extends Component
         }
         axiosAuth.post(`/accounts:signInWithPassword?key=${API_KEY}`,authData)
             .then(response => {
-                this.props.loginUser(authData)
+                this.props.loginUser(response.data)
                 this.setState({loading: false, hasError: false})
                 this.props.navigate("/")
             })
             .catch(error => {
-                this.setState({loading: false})
-                console.log(error.code)
+                this.setState({loading: false, hasError: true, error: error.response.data.error})
             })
     }
-
+    switchHandler = () => {
+        this.setState(prevState => {
+            return {isSignup: !prevState.isSignup, error: {},hasError: false}
+        })
+    }
     render() {
         const signupForm = this.state.signupForm
         const signupFormElements = []
@@ -249,6 +254,7 @@ class Auth extends Component
         }
 
         let content =  (<div className={classes.Auth}>
+                            {this.state.isSignup ?
                             <article className={classes.Signup}>
                                 <h3 className={classes.Header}>sign up</h3>
                                 <form>
@@ -257,8 +263,9 @@ class Auth extends Component
                                             disabled={!this.state.signupFormValid}>
                                         sign up
                                     </Button>
+                                    {this.state.hasError && <p className={classes.Error}>{this.state.error.message}</p>}
                                 </form>
-                            </article>
+                            </article> :
                             <article className={classes.Login}>
                                 <h3 className={classes.Header}>login</h3>
                                 <form>
@@ -267,15 +274,14 @@ class Auth extends Component
                                             disabled={!this.state.loginFormValid}>
                                         login
                                     </Button>
+                                    {this.state.hasError && <p className={classes.Error}>{this.state.error.message}</p>}
                                 </form>
-                            </article>
+                            </article>}
+                        <Button btnType="Danger" clicked={this.switchHandler}>switch to {this.state.isSignup ? "login" : "signup"}</Button>
                         </div>)
         if (this.state.loading)
         {
             content = <Spinner />
-        }
-        if (this.state.hasError){
-            content = <h3>something went wrong !</h3>
         }
         return content
     }
