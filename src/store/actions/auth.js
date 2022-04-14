@@ -14,3 +14,9 @@ export const loginUser = (authData) => {
         authData: authData
     }
 }
+
+export const logoutUser = () => {
+    return {
+        type: actionTypes.LOGOUT_USER,
+    }
+}

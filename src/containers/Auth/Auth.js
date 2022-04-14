@@ -3,7 +3,7 @@ import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css"
 import Spinner from "../../components/UI/Spinner/Spinner";
-import {authenticateUser,loginUser} from "../../store/actions/";
+import {authenticateUser, loginUser, logoutUser} from "../../store/actions/";
 import {API_KEY} from "../../firebase";
 import { axiosAuth } from "../../axios"
 import { connect } from "react-redux"
@@ -200,6 +200,9 @@ class Auth extends Component
         axiosAuth.post(`/accounts:signUp?key=${API_KEY}`,authData)
             .then((response) => {
                 this.props.authenticate(response.data)
+                setTimeout(() => {
+                    this.props.logout()
+                },response.data.expiresIn * 1000)
                 this.setState({loading: false, hasError: false})
                 this.props.navigate("/")
             })
@@ -219,6 +222,9 @@ class Auth extends Component
         axiosAuth.post(`/accounts:signInWithPassword?key=${API_KEY}`,authData)
             .then(response => {
                 this.props.loginUser(response.data)
+                setTimeout(() => {
+                    this.props.logout()
+                },response.data.expiresIn * 1000)
                 this.setState({loading: false, hasError: false})
                 this.props.navigate("/")
             })
@@ -290,7 +296,8 @@ class Auth extends Component
 const mapDispatchToProps = (dispatch) => {
     return {
         authenticate: (authData) => dispatch(authenticateUser(authData)),
-        loginUser: (authData) => dispatch(loginUser(authData))
+        loginUser: (authData) => dispatch(loginUser(authData)),
+        logout: () => dispatch(logoutUser())
     }
 }
 

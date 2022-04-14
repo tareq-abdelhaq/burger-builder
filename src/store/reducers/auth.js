@@ -23,6 +23,13 @@ export const auth = (state = initialState, action) =>
                 userId: action.authData.localId,
                 authenticated: true
             }
+        case actionTypes.LOGOUT_USER:
+            return {
+                ...state,
+                token: null,
+                userId: null,
+                authenticated: false
+            }
         default:
             return {...state}
     }
