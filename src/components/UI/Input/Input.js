@@ -15,6 +15,8 @@ const input = (props) => {
                             id={props.label}
                             value={props.value}
                             onChange={props.change}
+                            onBlur={props.blur}
+                            type={props.type}
                           />
             break
         case "select":
@@ -38,7 +40,12 @@ const input = (props) => {
 
 input.propTypes = {
     inputtype: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    touched: PropTypes.bool,
+    change: PropTypes.func.isRequired,
+    inValidMessage: PropTypes.string
 }
 
 

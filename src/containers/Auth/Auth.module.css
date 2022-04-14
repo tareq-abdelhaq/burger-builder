@@ -1,0 +1,29 @@
+.Auth
+{
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    margin: auto;
+}
+.Signup
+{
+    flex-basis: 50%;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 3px #DDD;
+}
+.Login
+{
+    flex-basis: 50%;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 3px #DDD;
+}
+.Header
+{
+    width: fit-content;
+    margin: auto;
+    font-size: 1.8rem;
+}

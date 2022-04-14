@@ -8,7 +8,6 @@ import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 import Modal from "../../../components/UI/Modal/Modal";
 import withRouter from "../../../hoc/withRouter";
 import Input from "../../../components/UI/Input/Input";
-import order from "../../../components/Order/Order";
 
 class OrderForum extends Component
 {
