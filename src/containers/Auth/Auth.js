@@ -2,22 +2,17 @@ import { Component } from "react"
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css"
+import Spinner from "../../components/UI/Spinner/Spinner";
+import {authenticateUser,loginUser} from "../../store/actions/";
+import {API_KEY} from "../../firebase";
+import { axiosAuth } from "../../axios"
+import { connect } from "react-redux"
+import withRouter from "../../hoc/withRouter";
+
 class Auth extends Component
 {
     state = {
         signupForm: {
-          username: {
-              inputtype: "input",
-              type: "text",
-              value: "",
-              valid: false,
-              inValidMessage: "",
-              touched: false,
-              rules:{
-                  required: true,
-                  minLength: 8
-              }
-          },
           email: {
               inputtype: "input",
               type: "email",
@@ -60,10 +55,12 @@ class Auth extends Component
         },
         signupFormValid: false,
         loginForm: {
-            username: {
+            email: {
                 inputtype: "input",
-                type: "text",
+                type: "email",
                 value: "",
+                valid: false,
+                inValidMessage: "",
                 rules: {
                     required: true
                 }
@@ -72,14 +69,18 @@ class Auth extends Component
                 inputtype: "input",
                 type: "password",
                 value: "",
+                valid: false,
+                inValidMessage: "",
                 rules: {
                     required: true
                 }
             }
         },
-        loginFormValid: false
+        loginFormValid: false,
+        loading: false,
+        hasError: false
     }
-    checkSignupInputValidity = (field,value,rules) => {
+    checkValidity = (field,value,rules) => {
         const validity = {field: field, valid: true,inValidMessage: ""}
 
         if (rules.required)
@@ -149,7 +150,7 @@ class Auth extends Component
     }
     signupInputChangeHandler = (event) => {
         const signupForm = {...this.state.signupForm}
-        const {field, valid, inValidMessage} = this.checkSignupInputValidity(event.target.name , event.target.value,this.state.signupForm[event.target.name].rules)
+        const {field, valid, inValidMessage} = this.checkValidity(event.target.name , event.target.value,this.state.signupForm[event.target.name].rules)
         signupForm[event.target.name].value = event.target.value
         /* change the validity of the field coming from the checkSignupInputValidity
         just in case if it's tweaked to be the confirmPassword and not the password
@@ -169,16 +170,60 @@ class Auth extends Component
         this.setState({signupForm: signupForm, signupFormValid: signupFormValid})
     }
 
-    loginInputChangedHandler = () => {
+    loginInputChangedHandler = (event) => {
+        const loginForm = {...this.state.loginForm}
+        const {valid,inValidMessage} = this.checkValidity(event.target.name,event.target.value,loginForm[event.target.name].rules)
+        loginForm[event.target.name].value = event.target.value
+        loginForm[event.target.name].valid = valid
+        loginForm[event.target.name].inValidMessage = inValidMessage
+        let formValid = true
+        for(let field in loginForm){
+            if (!loginForm[field].valid)
+            {
+                formValid = false
+            }
+        }
 
+        this.setState({loginForm: loginForm, loginFormValid: formValid})
     }
 
-    signupSubmitHandler = () => {
-
+    signupSubmitHandler = (event) => {
+        event.preventDefault();
+        this.setState({loading: true})
+        const authData = {
+            email: this.state.signupForm.email.value,
+            password: this.state.signupForm.password.value,
+            returnSecureToken: true
+        }
+        axiosAuth.post(`/accounts:signUp?key=${API_KEY}`,authData)
+            .then((response) => {
+                this.props.authenticate(authData)
+                this.setState({loading: false})
+                this.props.navigate("/")
+            })
+            .catch(error => {
+                this.setState({loading: false, hasError: true})
+            })
     }
 
-    loginSubmitHandler = () => {
-
+    loginSubmitHandler = (event) => {
+        event.preventDefault();
+        this.setState({loading: true})
+        const authData = {
+            email: this.state.loginForm.email.value,
+            password: this.state.loginForm.password.value,
+            returnSecureToken: true
+        }
+        axiosAuth.post(`/accounts:signInWithPassword?key=${API_KEY}`,authData)
+            .then(response => {
+                this.props.loginUser(authData)
+                this.setState({loading: false, hasError: false})
+                this.props.navigate("/")
+            })
+            .catch(error => {
+                this.setState({loading: false})
+                console.log(error.code)
+            })
     }
 
     render() {
@@ -198,32 +243,49 @@ class Auth extends Component
         const loginFormElements = []
         for(let field in loginForm){
             loginFormElements.push( <Input key={field} name={field} inputtype={loginForm[field].inputtype}
-                                           label={field} value={loginForm[field].value}
+                                           label={field} value={loginForm[field].value} type={loginForm[field].type}
+                                           valid={loginForm[field].valid} invalidMessage={loginForm[field].inValidMessage}
                                            change={this.loginInputChangedHandler} />)
         }
 
-        return(
-            <div className={classes.Auth}>
-                <article className={classes.Signup}>
-                    <h3 className={classes.Header}>sign up</h3>
-                    <form>
-                        {signupFormElements}
-                        <Button btnType="Success" clicked={this.signupSubmitHandler}
-                                disabled={!this.state.signupFormValid}>
-                            sign up
-                        </Button>
-                    </form>
-                </article>
-                <article className={classes.Login}>
-                    <h3 className={classes.Header}>login</h3>
-                    <form>
-                        {loginFormElements}
-                        <Button btnType="Success" clicked={this.loginSubmitHandler}> login </Button>
-                    </form>
-                </article>
-            </div>
-        )
+        let content =  (<div className={classes.Auth}>
+                            <article className={classes.Signup}>
+                                <h3 className={classes.Header}>sign up</h3>
+                                <form>
+                                    {signupFormElements}
+                                    <Button btnType="Success" clicked={this.signupSubmitHandler}
+                                            disabled={!this.state.signupFormValid}>
+                                        sign up
+                                    </Button>
+                                </form>
+                            </article>
+                            <article className={classes.Login}>
+                                <h3 className={classes.Header}>login</h3>
+                                <form>
+                                    {loginFormElements}
+                                    <Button btnType="Success" clicked={this.loginSubmitHandler}
+                                            disabled={!this.state.loginFormValid}>
+                                        login
+                                    </Button>
+                                </form>
+                            </article>
+                        </div>)
+        if (this.state.loading)
+        {
+            content = <Spinner />
+        }
+        if (this.state.hasError){
+            content = <h3>something went wrong !</h3>
+        }
+        return content
     }
 }
 
-export default Auth
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authenticate: (authData) => dispatch(authenticateUser(authData)),
+        loginUser: (authData) => dispatch(loginUser(authData))
+    }
+}
+
+export default connect(null,mapDispatchToProps)(withRouter(Auth))

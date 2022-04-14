@@ -6,7 +6,7 @@ const initialState =
     totalPrice: 4,
 }
 
-export const reducer = (state = initialState, action) =>
+export const ingredients = (state = initialState, action) =>
 {
     switch (action.type){
         case actionTypes.INITIALIZE_INGREDIENTS:

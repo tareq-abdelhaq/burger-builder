@@ -6,6 +6,7 @@ import CheckOut from "./containers/CheckOut/CheckOut";
 import Orders from "./containers/Orders/Orders";
 import OrderForum from "./containers/CheckOut/OrderForum/OrderForum";
 import Auth from "./containers/Auth/Auth";
+import { connect } from "react-redux";
 
 
 class App extends React.Component{
@@ -14,7 +15,7 @@ class App extends React.Component{
        <Layout>
            <Routes>
                <Route path="/" element={<BurgerBuilder />}/>
-               <Route path="/auth" element={<Auth />} />
+               {!this.props.authenticated && <Route path="/auth" element={<Auth/>}/>}
                <Route path="/checkout/" element={<CheckOut />}>
                    <Route path="order-forum" element={<OrderForum />} />
                </Route>
@@ -25,4 +26,10 @@ class App extends React.Component{
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        authenticated: state.auth.authenticated
+    }
+}
+
+export default connect(mapStateToProps)(App);

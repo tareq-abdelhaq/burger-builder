@@ -1,18 +1,22 @@
 import React from "react"
 import * as ReactDOMClient from "react-dom/client"
-import {createStore, compose, applyMiddleware} from "redux";
+import {createStore, compose, applyMiddleware, combineReducers} from "redux";
 import thunk from "redux-thunk"
-import {reducer} from "./store/reducers/reducer"
+import {ingredients} from "./store/reducers/ingredients"
+import {auth} from "./store/reducers/auth"
 import {Provider} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
 import "./index.css"
 import App from "./App"
 
-
+const rootReducer = combineReducers({
+    ings: ingredients,
+    auth: auth
+})
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer,composeEnhancers(applyMiddleware(thunk)))
+const store = createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)))
 
 const rootElement = document.querySelector("#root");
 
