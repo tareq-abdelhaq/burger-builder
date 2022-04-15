@@ -1,16 +1,17 @@
-import React from "react"
+import React,{lazy,Suspense} from "react"
 import Layout from "./containers/Layout/Layout";
 import {Routes,Route} from "react-router-dom"
 import * as actions from "./store/actions/"
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
-import CheckOut from "./containers/CheckOut/CheckOut";
-import Orders from "./containers/Orders/Orders";
 import OrderForum from "./containers/CheckOut/OrderForum/OrderForum";
-import Auth from "./containers/Auth/Auth";
 import { connect } from "react-redux";
 import Logout from "./containers/Auth/Logout/Logout";
 import {Navigate} from "react-router-dom";
+import Spinner from "./components/UI/Spinner/Spinner";
 
+const CheckOut = lazy(() => import("./containers/CheckOut/CheckOut"))
+const Auth = lazy(() => import( "./containers/Auth/Auth"))
+const Orders = lazy(() => import("./containers/Orders/Orders"))
 
 class App extends React.Component{
 
@@ -32,7 +33,7 @@ class App extends React.Component{
         routes = (
             <Routes>
                 <Route path="/" index element={<BurgerBuilder />}/>
-                <Route path="/auth" element={<Auth/>}/>
+                <Route path="/auth" element={<Suspense fallback={<Spinner />}><Auth/></Suspense>}/>
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         )
@@ -41,11 +42,11 @@ class App extends React.Component{
         routes = (
             <Routes>
                 <Route path="/" element={<BurgerBuilder />}/>
-                <Route path="/checkout/" element={<CheckOut />}>
+                <Route path="/checkout/" element={<Suspense fallback={<Spinner />}> <CheckOut /> </Suspense>}>
                     <Route path="order-forum" element={<OrderForum />} />
                 </Route>
                 <Route path="/logout" element={<Logout />}/>
-                <Route path="/orders" element={<Orders />} />
+                <Route path="/orders" element={<Suspense fallback={<Spinner />}> <Orders /> </Suspense>} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         )
