@@ -15,11 +15,11 @@ class App extends React.Component{
        <Layout>
            <Routes>
                <Route path="/" element={<BurgerBuilder />}/>
-               {!this.props.authenticated && <Route path="/auth" element={<Auth/>}/>}
+               {!this.props.isAuthenticated ? <Route path="/auth" element={<Auth/>}/>: <Route path="/logout" element={<h1>logging you out</h1>}/>}
                <Route path="/checkout/" element={<CheckOut />}>
                    <Route path="order-forum" element={<OrderForum />} />
                </Route>
-               <Route path="/orders" element={<Orders />} />
+               {this.props.isAuthenticated && <Route path="/orders" element={<Orders />} />}
            </Routes>
        </Layout>
     );
@@ -28,7 +28,7 @@ class App extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        authenticated: state.auth.authenticated
+        isAuthenticated: state.auth.token !== null
     }
 }
 

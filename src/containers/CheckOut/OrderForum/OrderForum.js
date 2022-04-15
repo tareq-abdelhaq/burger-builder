@@ -5,9 +5,11 @@ import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import axios from "../../../axios"
 import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
+import FailureModal from "../../../components/UI/FailureModal/FailureModal";
 import Modal from "../../../components/UI/Modal/Modal";
 import withRouter from "../../../hoc/withRouter";
 import Input from "../../../components/UI/Input/Input";
+import {Link} from "react-router-dom";
 
 class OrderForum extends Component
 {
@@ -112,7 +114,7 @@ class OrderForum extends Component
         success: false,
         modalVisible: false,
         hasError: false,
-        errorMessage: ""
+        error: {}
 
     }
 
@@ -164,6 +166,7 @@ class OrderForum extends Component
          const order = {
              ingredients: this.props.ingredients,
              price: this.props.totalPrice,
+             deliveryMethod: this.state.orderForm.deliveryMethod.value,
              customer: {
                      name: this.state.orderForm.username.value,
                      email: this.state.orderForm.email.value,
@@ -176,8 +179,9 @@ class OrderForum extends Component
                      apartNumber: this.state.orderForm.apartmentNumber.value
                  }
              }
-        axios.post("orders.json",order)
-        .then(()=> this.setState({loading: false,success: true,modalVisible:true}))
+        axios.post(`orders.json?auth=${this.props.idToken}`,order)
+        .then(()=> this.setState({loading: false,success: true,modalVisible:true, hasError: false, error: {}}))
+        .catch(error => this.setState({hasError: true , error: error.response.data.error, loading: false, success: false, modalVisible: true}))
    }
 
    cancelModalHandler = () => {
@@ -195,33 +199,52 @@ class OrderForum extends Component
                                       touched={orderForm[key].touched} invalidMessage={orderForm[key].invalidMessage}/>)
         }
 
-
-        return(
-                this.state.success ?
-                    <Modal visible={this.state.modalVisible} cancel={this.cancelModalHandler}>
-                        <SuccessModal> we have received your order </SuccessModal>
-                    </Modal> :
-                    <div className={classes.OrderForum}>
-                        {this.state.loading ? <Spinner/> :
-                            <>
-                                <h3> Enter your Contact Data </h3>
-                                <form>
-                                    {inputElements}
-                                    <Button btnType="Success" clicked={this.submitOrderHandler} disabled={!this.state.valid}>
-                                        Make Order
-                                    </Button>
-                                </form>
-                            </>
-                        }
-                    </div>
-                )
+        let content = (
+            <div className={classes.OrderForum}>
+                {this.state.loading ? <Spinner/> :
+                    <>
+                        <h3> Enter your Contact Data </h3>
+                        <form>
+                            {inputElements}
+                            <Button btnType="Success" clicked={this.submitOrderHandler} disabled={!this.state.valid}>
+                                Make Order
+                            </Button>
+                        </form>
+                    </>
+                }
+            </div>
+        )
+        if (this.state.success)
+        {
+            content = (
+                <Modal visible={this.state.modalVisible} cancel={this.cancelModalHandler}>
+                    <SuccessModal> we have received your order </SuccessModal>
+                </Modal>
+            )
+        }
+        if (this.state.hasError)
+        {
+            console.log(this.state.error)
+            content = (
+                <Modal visible={this.state.modalVisible} cancel={this.cancelModalHandler}>
+                    <FailureModal>{this.state.error}</FailureModal>
+                </Modal>
+            )
+        }
+        if (!this.props.isAuthenticated)
+        {
+            content = <h2 className={classes.LoginHint}>you have to login first in order to be able to send an order, <Link to="/auth">login</Link></h2>
+        }
+        return content
         }
 }
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.ings.ingredients,
+        totalPrice: state.ings.totalPrice,
+        idToken: state.auth.token,
+        isAuthenticated: state.auth.token !== null
     }
 }
 

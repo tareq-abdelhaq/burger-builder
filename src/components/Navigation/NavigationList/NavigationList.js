@@ -5,14 +5,15 @@ import {connect} from "react-redux";
 const navigationList = (props) => (
     <ul className={classes.NavigationList}>
         <NavigationItem link="/">Burger Builder</NavigationItem>
-        <NavigationItem link="/orders">Order History</NavigationItem>
-        {!props.authenticated && <NavigationItem link="/auth">login / sign up</NavigationItem>}
+        {props.isAuthenticated && <NavigationItem link="/orders">Order History</NavigationItem>}
+        {!props.isAuthenticated ?  <NavigationItem link="/auth">login / sign up</NavigationItem> :
+            <NavigationItem link="/logout">logout</NavigationItem>}
     </ul>
 )
 
 const mapStateToProps = state => {
     return {
-        authenticated: state.auth.authenticated
+        isAuthenticated: state.auth.token !== null
     }
 }
 

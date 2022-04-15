@@ -31,3 +31,8 @@
     text-transform: uppercase;
     width: fit-content;
 }
+.LoginHint
+{
+    width: fit-content;
+    margin: auto;
+}

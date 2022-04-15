@@ -1,4 +1,5 @@
 import {Component} from "react";
+import { connect } from "react-redux"
 import Order from "../../components/Order/Order"
 import classes from "./Orders.module.css"
 import axios from "../../axios";
@@ -18,7 +19,7 @@ class Orders extends Component
     componentDidMount() {
         this.setState({loading: true})
         //response =>
-        axios.get("orders.json")
+        axios.get(`orders.json?auth=${this.props.idToken}`)
             .then(response => {
                 const fetchedOrders = []
                 for(let key in response.data){
@@ -47,6 +48,7 @@ class Orders extends Component
         {
             content = <Spinner />
         }
+        console.log(this.state.orders)
         return (
             <div className={classes.Orders}>
                 {content}
@@ -55,4 +57,10 @@ class Orders extends Component
     }
 }
 
-export default Orders;
+const mapStateToProps = state => {
+    return {
+        idToken: state.auth.token
+    }
+}
+
+export default connect(mapStateToProps)(Orders);
