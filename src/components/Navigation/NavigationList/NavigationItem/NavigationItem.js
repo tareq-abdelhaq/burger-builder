@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 
 
 const navigationItem = (props) => (
-    <li className={classes.NavigationItem}>
+    <li className={classes.NavigationItem} onClick={props.hide}>
         <NavLink to={props.link} className={(navData) => navData.isActive ? classes.active : ""}>
             {props.children}
         </NavLink>

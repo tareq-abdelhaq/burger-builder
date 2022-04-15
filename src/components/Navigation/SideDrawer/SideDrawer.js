@@ -11,7 +11,7 @@ const sideDrawer = (props) => {
             <aside className={[classes.SideDrawer, props.visible ? classes.open : classes.close].join(" ")}>
                 <Logo height="6%"/>
                 <nav>
-                    <NavigationList />
+                    <NavigationList hide={props.drawerHidden}/>
                 </nav>
             </aside>
         </>

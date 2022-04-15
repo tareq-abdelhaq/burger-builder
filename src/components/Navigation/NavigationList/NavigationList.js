@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 
 const navigationList = (props) => (
     <ul className={classes.NavigationList}>
-        <NavigationItem link="/">Burger Builder</NavigationItem>
-        {props.isAuthenticated && <NavigationItem link="/orders">Order History</NavigationItem>}
-        {!props.isAuthenticated ?  <NavigationItem link="/auth">login / sign up</NavigationItem> :
-            <NavigationItem link="/logout">logout</NavigationItem>}
+        <NavigationItem link="/" hide={props.hide}>Burger Builder</NavigationItem>
+        {props.isAuthenticated && <NavigationItem link="/orders" hide={props.hide}>Order History</NavigationItem>}
+        {!props.isAuthenticated ?  <NavigationItem link="/auth" hide={props.hide}>login / sign up</NavigationItem> :
+            <NavigationItem link="/logout" hide={props.hide}>logout</NavigationItem>}
     </ul>
 )
 
