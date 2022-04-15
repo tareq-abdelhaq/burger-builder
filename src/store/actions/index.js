@@ -7,5 +7,6 @@ export {
 export {
     authenticateUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    restoreAuthenticationStatus
 } from "./auth"

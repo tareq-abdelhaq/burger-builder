@@ -8,6 +8,9 @@ class Logout extends Component
     componentDidMount()
     {
         this.props.logout()
+        window.localStorage.removeItem("token")
+        window.localStorage.removeItem("userId")
+        window.localStorage.removeItem("expirationDate")
     }
     render() {
         return(

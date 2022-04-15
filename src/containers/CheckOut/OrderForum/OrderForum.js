@@ -167,6 +167,7 @@ class OrderForum extends Component
              ingredients: this.props.ingredients,
              price: this.props.totalPrice,
              deliveryMethod: this.state.orderForm.deliveryMethod.value,
+             userId: this.props.userId,
              customer: {
                      name: this.state.orderForm.username.value,
                      email: this.state.orderForm.email.value,
@@ -239,7 +240,8 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ings.ingredients,
         totalPrice: state.ings.totalPrice,
-        idToken: state.auth.token
+        idToken: state.auth.token,
+        userId: state.auth.userId
     }
 }
 

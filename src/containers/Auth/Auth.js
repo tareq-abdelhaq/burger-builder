@@ -188,6 +188,12 @@ class Auth extends Component
 
         this.setState({loginForm: loginForm, loginFormValid: formValid})
     }
+    automateLogout = () => {
+        this.props.logout()
+        window.localStorage.removeItem("token")
+        window.localStorage.removeItem("userId")
+        window.localStorage.removeItem("expirationDate")
+    }
 
     signupSubmitHandler = (event) => {
         event.preventDefault();
@@ -199,10 +205,14 @@ class Auth extends Component
         }
         axiosAuth.post(`/accounts:signUp?key=${API_KEY}`,authData)
             .then((response) => {
-                this.props.authenticate(response.data)
+                const expiresIn = new Date(new Date().getTime() + response.data.expiresIn * 1000)
+                this.props.authenticate(response.data,expiresIn)
                 setTimeout(() => {
-                    this.props.logout()
+                    this.automateLogout()
                 },response.data.expiresIn * 1000)
+                window.localStorage.setItem("token",response.data.idToken)
+                window.localStorage.setItem("userId",response.data.localId)
+                window.localStorage.setItem("epxirationDate",expiresIn.toTimeString())
                 this.setState({loading: false, hasError: false})
                 /*
                     navigate the user to the home page if all ingredients are zeros, which means he
@@ -227,10 +237,16 @@ class Auth extends Component
         }
         axiosAuth.post(`/accounts:signInWithPassword?key=${API_KEY}`,authData)
             .then(response => {
-                this.props.loginUser(response.data)
+                const expiresIn = new Date(new Date().getTime() + response.data.expiresIn * 1000)
+                console.log(expiresIn)
+                this.props.loginUser(response.data,expiresIn)
                 setTimeout(() => {
-                    this.props.logout()
+                    this.automateLogout()
                 },response.data.expiresIn * 1000)
+                window.localStorage.setItem("token",response.data.idToken)
+                window.localStorage.setItem("userId",response.data.localId)
+
+                window.localStorage.setItem("expirationDate",expiresIn.toString())
                 this.setState({loading: false, hasError: false})
                 /*
                   navigate the user to the home page if all ingredients are zeros, which means he
@@ -314,7 +330,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
     {
-        authenticate: (authData) => dispatch(authenticateUser(authData)),
+        authenticate: (authData,expiresIn) => dispatch(authenticateUser(authData,expiresIn)),
         loginUser: (authData) => dispatch(loginUser(authData)),
         logout: () => dispatch(logoutUser())
     }
