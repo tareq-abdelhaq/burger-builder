@@ -7,6 +7,7 @@ import Orders from "./containers/Orders/Orders";
 import OrderForum from "./containers/CheckOut/OrderForum/OrderForum";
 import Auth from "./containers/Auth/Auth";
 import { connect } from "react-redux";
+import Logout from "./containers/Auth/Logout/Logout";
 
 
 class App extends React.Component{
@@ -15,11 +16,16 @@ class App extends React.Component{
        <Layout>
            <Routes>
                <Route path="/" element={<BurgerBuilder />}/>
-               {!this.props.isAuthenticated ? <Route path="/auth" element={<Auth/>}/>: <Route path="/logout" element={<h1>logging you out</h1>}/>}
+               {
+                   !this.props.isAuthenticated ? <Route path="/auth" element={<Auth/>}/>
+                   : <Route path="/logout" element={<Logout />}/>
+               }
                <Route path="/checkout/" element={<CheckOut />}>
                    <Route path="order-forum" element={<OrderForum />} />
                </Route>
-               {this.props.isAuthenticated && <Route path="/orders" element={<Orders />} />}
+               {
+                   this.props.isAuthenticated && <Route path="/orders" element={<Orders />} />
+               }
            </Routes>
        </Layout>
     );
