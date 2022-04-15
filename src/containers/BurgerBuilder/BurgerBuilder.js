@@ -44,6 +44,9 @@ class BurgerBuilder extends Component
     orderContinueHandler = () => {
         this.props.navigate("/checkout")
     }
+    navigateToAuth = () => {
+        this.props.navigate("/auth", {replace: true})
+    }
     render(){
         const ingredients = Object.values(this.props.ingredients).reduce((prevSum,currVal) => prevSum+currVal ,0)
         const purchasable = ingredients > 0 ;
@@ -73,6 +76,7 @@ class BurgerBuilder extends Component
                                 totalPrice={this.props.totalPrice}
                                 purchasable={purchasable}
                                 showOrderSummery={this.orderSummeryHandler}
+                               navigateToAuth={this.navigateToAuth}
                     />
                     :
                     <Spinner />

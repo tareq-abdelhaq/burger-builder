@@ -204,7 +204,13 @@ class Auth extends Component
                     this.props.logout()
                 },response.data.expiresIn * 1000)
                 this.setState({loading: false, hasError: false})
-                this.props.navigate("/")
+                /*
+                    navigate the user to the home page if all ingredients are zeros, which means he
+                    hasn't start building his burger yet, otherwise redirect him to the checkout
+                 */
+                Object.value(this.props.ingredients).reduce((prev,next) => {
+                    return prev+next
+                },0) ? this.props.navigate("/checkout", {replace: true}) : this.props.navigate("/")
             })
             .catch(error => {
                 this.setState({loading: false, hasError: true, error: error.response.data.error})
@@ -226,7 +232,14 @@ class Auth extends Component
                     this.props.logout()
                 },response.data.expiresIn * 1000)
                 this.setState({loading: false, hasError: false})
-                this.props.navigate("/")
+                /*
+                  navigate the user to the home page if all ingredients are zeros, which means he
+                  hasn't start building his burger yet, otherwise redirect him to the checkout
+               */
+                Object.values(this.props.ingredients).reduce((prev,next) => {
+                    return prev+next
+                },0) ? this.props.navigate("/checkout", {replace: true}) : this.props.navigate("/")
+
             })
             .catch(error => {
                 this.setState({loading: false, hasError: true, error: error.response.data.error})
@@ -293,12 +306,18 @@ class Auth extends Component
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
+const mapStateToProps = state => (
+    {
+        ingredients: state.ings.ingredients
+    }
+)
+
+const mapDispatchToProps = dispatch => (
+    {
         authenticate: (authData) => dispatch(authenticateUser(authData)),
         loginUser: (authData) => dispatch(loginUser(authData)),
         logout: () => dispatch(logoutUser())
     }
-}
+)
 
-export default connect(null,mapDispatchToProps)(withRouter(Auth))
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Auth))

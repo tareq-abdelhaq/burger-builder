@@ -231,10 +231,6 @@ class OrderForum extends Component
                 </Modal>
             )
         }
-        if (!this.props.isAuthenticated)
-        {
-            content = <h2 className={classes.LoginHint}>you have to login first in order to be able to send an order, <Link to="/auth">login</Link></h2>
-        }
         return content
         }
 }
@@ -243,8 +239,7 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ings.ingredients,
         totalPrice: state.ings.totalPrice,
-        idToken: state.auth.token,
-        isAuthenticated: state.auth.token !== null
+        idToken: state.auth.token
     }
 }
 

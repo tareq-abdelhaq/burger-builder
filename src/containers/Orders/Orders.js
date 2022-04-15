@@ -48,7 +48,6 @@ class Orders extends Component
         {
             content = <Spinner />
         }
-        console.log(this.state.orders)
         return (
             <div className={classes.Orders}>
                 {content}
