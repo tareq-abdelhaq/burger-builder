@@ -1,5 +1,6 @@
 import React from "react"
-import * as ReactDOMClient from "react-dom/client"
+// import * as ReactDOMClient from "react-dom/client"
+import ReactDOM from "react-dom";
 import {createStore, compose, applyMiddleware, combineReducers} from "redux";
 import thunk from "redux-thunk"
 import {ingredients} from "./store/reducers/ingredients"
@@ -20,12 +21,13 @@ const store = createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)))
 
 const rootElement = document.querySelector("#root");
 
-const container = ReactDOMClient.createRoot(rootElement)
+// const container = ReactDOMClient.createRoot(rootElement)
 
-container.render(
+ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
           <App />
       </BrowserRouter>
-    </Provider>
+    </Provider>,
+    rootElement
 )
