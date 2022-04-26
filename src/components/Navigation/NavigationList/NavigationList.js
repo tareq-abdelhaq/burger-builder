@@ -2,7 +2,7 @@ import classes from "./NavigationList.module.css"
 import NavigationItem from "./NavigationItem/NavigationItem";
 import {connect} from "react-redux";
 
-const navigationList = (props) => (
+export const navigationList = (props) => (
     <ul className={classes.NavigationList}>
         <NavigationItem link="/" hide={props.hide}>Burger Builder</NavigationItem>
         {props.isAuthenticated && <NavigationItem link="/orders" hide={props.hide}>Order History</NavigationItem>}

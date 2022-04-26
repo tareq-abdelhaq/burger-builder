@@ -3,7 +3,7 @@ import * as actionTypes from "../actions/actionTypes"
 const initialState = {
     token: null,
     userId: null,
-    expirationData: null
+    expirationDate: null
 }
 
 export const auth = (state = initialState, action) =>
@@ -14,14 +14,14 @@ export const auth = (state = initialState, action) =>
                 ...state,
                 token: action.authData.idToken,
                 userId: action.authData.localId,
-                expirationData: action.expirationDate
+                expirationDate: action.expirationDate
             }
         case actionTypes.LOGIN_USER:
             return {
                 ...state,
                 token: action.authData.idToken,
                 userId: action.authData.localId,
-                expirationData: action.expirationDate
+                expirationDate: action.expirationDate
 
             }
         case actionTypes.LOGOUT_USER:
@@ -29,14 +29,14 @@ export const auth = (state = initialState, action) =>
                 ...state,
                 token: null,
                 userId: null,
-                expirationData: null
+                expirationDate: null
             }
         case actionTypes.RESTORE_AUTHENTICATION_STATUS:
             return {
                 ...state,
                 token: action.token,
                 userId: action.userId,
-                expirationData: action.expirationDate
+                expirationDate: action.expirationDate
             }
         default:
             return {...state}

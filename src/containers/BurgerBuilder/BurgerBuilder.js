@@ -16,7 +16,7 @@ import axios from "../../axios";
 
 
 
-class BurgerBuilder extends Component
+export class BurgerBuilder extends Component
 {
     state = {
         orderModalVisible: false,
